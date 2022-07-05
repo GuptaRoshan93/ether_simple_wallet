@@ -1,0 +1,33 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.11;
+
+contract etherWallet{
+
+    // address is the wallet address
+    // payable is funtion which can recive ether 
+    //public is funtion is visible to inside and outside ,also complier will generate this funtion in complier automaticaly.
+
+    address payable public owner;
+
+    // constructor funtion is used one time during the life cycle of the contract
+    //msg is global variable 
+    //msg.sender gives the address of the person who deploys the contract hence owner address
+    constructor() {
+        owner = payable(msg.sender);
+    }
+
+    // recive is default funtion which help to recive funds
+        // smartcontract can act as a wallet hence can be used as saving account or similar
+    receive() external payable {}
+
+    function withdraw(uint _amount)external {
+        require (msg.sender==owner, "only the owner can call this funtion");
+        payable(msg.sender).transfer(_amount);
+    }
+
+        // address(this) refers to the current address of the wallet/ smart contract
+
+    function getBalance() external view returns (uint){
+        return address(this).balance;
+    } 
+}
